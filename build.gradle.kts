@@ -8,7 +8,11 @@ plugins {
 android {
     namespace = "ai.p2ach.commonlibrary"
     compileSdk = 36
-    defaultConfig { minSdk = 24 }
+
+    defaultConfig {
+        minSdk = 24
+        consumerProguardFiles("consumer-rules.pro") // ✅
+    }
 
     buildFeatures {
         viewBinding = true
@@ -28,7 +32,6 @@ android {
     kotlinOptions { jvmTarget = "11" }
 }
 
-
 afterEvaluate {
     publishing {
         publications {
@@ -36,31 +39,32 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.seehoon"
                 artifactId = "commonLibrary"
-                // version은 JitPack이 자동으로 git tag 사용
+                // version은 JitPack이 git tag로 자동 처리
+                pom {
+                    name.set("commonLibrary")
+                    description.set("Common data layer (Room/Retrofit/OkHttp/Logger)")
+                }
             }
         }
     }
 }
 
 dependencies {
-
-
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
 
-
+    // Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
-
+    // Retrofit + OkHttp
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-
+    // Logger
     implementation("com.orhanobut:logger:2.2.0")
 }
