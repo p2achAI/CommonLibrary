@@ -1,68 +1,95 @@
-# Gradle
+############################
+# Android & Gradle defaults
+############################
+
+# Gradle build cache & output
 .gradle/
 build/
+*/build/
+
+# Gradle Wrapper to JitPack
+!gradlew
+!gradlew.bat
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
+
+# Local config
 local.properties
 
-# Android Studio
+############################
+# Android Studio / IntelliJ
+############################
 .idea/
 *.iml
 *.ipr
 *.iws
 
-# Generated files
+# Android captures & outputs
 captures/
 output.json
 *.apk
 *.ap_
 *.dex
 *.class
-
-# Log files
 *.log
 
-# OS-specific files
+############################
+# OS-specific junk
+############################
 .DS_Store
 Thumbs.db
 
-# Kotlin/Java
+############################
+# Build artifacts
+############################
 *.jar
 *.war
 *.ear
+*.hprof
 
-# Keystore files (if any)
+# BUT: allow wrapper jar
+!gradle/wrapper/gradle-wrapper.jar
+
+############################
+# Keystore files
+############################
 *.jks
 *.keystore
 
-# Jetpack Compose preview cache
+############################
+# Jetpack Compose / previews
+############################
 *.preview
 
-# NDK / CMake / external native builds
+############################
+# Native / CMake
+############################
 .externalNativeBuild/
 .cxx/
 
+############################
 # Google services / Firebase
+############################
 google-services.json
 fabric.properties
 
-# Unit test / coverage
+############################
+# Unit tests / coverage
+############################
 test-results/
-*.hprof
 *.ec
 *.out
 
-# Android lint
+############################
+# Android Lint
+############################
 lint-results.*
 lint/intermediates/
 lint/generated/
 
-# JitPack build cache
-.m2/
-.gradle/
-build/
-
-# JetBrains
+############################
+# JetBrains IDE settings
+############################
 .idea/caches/
 .idea/libraries/
 .idea/modules.xml
@@ -71,9 +98,27 @@ build/
 .idea/assetWizardSettings.xml
 .idea/misc.xml
 
-# Android Profiling
-*.hprof
-
-# Temporary
+############################
+# Maven / JitPack caches
+############################
+.m2/
+.gradle/
+build/
+*/build/
 tmp/
 temp/
+
+############################
+# Android Profiling
+############################
+*.hprof
+
+############################
+# Temporary files
+############################
+tmp/
+temp/
+
+############################
+# End of file
+############################
