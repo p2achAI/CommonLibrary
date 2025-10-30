@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
     id("maven-publish")
 }
@@ -15,7 +15,6 @@ android {
         dataBinding = true
     }
 
-    // ✅ 퍼블리시할 variant 명시
     publishing {
         singleVariant("release") {
             withSourcesJar()
@@ -29,7 +28,7 @@ android {
     kotlinOptions { jvmTarget = "11" }
 }
 
-// ✅ 반드시 afterEvaluate 안에서 components["release"] 접근
+
 afterEvaluate {
     publishing {
         publications {
@@ -44,21 +43,24 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
 
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
 
-    implementation(libs.androidx.navigation.ui)
-    implementation(libs.androidx.navigation.fragment)
 
-    implementation(libs.orhanobut.logger)
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+
+    implementation("com.orhanobut:logger:2.2.0")
 }
