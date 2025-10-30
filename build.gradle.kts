@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
+    id("com.android.library") version "8.2.2"
+    id("org.jetbrains.kotlin.android") version "2.0.21"
+    id("org.jetbrains.kotlin.kapt") version "2.0.21"
     id("maven-publish")
 }
 
@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         minSdk = 24
-        consumerProguardFiles("consumer-rules.pro") // ✅
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildFeatures {
@@ -39,7 +39,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.seehoon"
                 artifactId = "commonLibrary"
-                // version은 JitPack이 git tag로 자동 처리
+                // version은 JitPack이 git tag 사용
                 pom {
                     name.set("commonLibrary")
                     description.set("Common data layer (Room/Retrofit/OkHttp/Logger)")
