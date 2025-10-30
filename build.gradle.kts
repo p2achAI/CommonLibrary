@@ -20,9 +20,7 @@ android {
     }
 
     publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
+        singleVariant("release") { withSourcesJar() }
     }
 
     compileOptions {
@@ -39,7 +37,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.seehoon"
                 artifactId = "commonLibrary"
-                // version은 JitPack이 git tag 사용
+                // version은 JitPack에서 git tag 사용
                 pom {
                     name.set("commonLibrary")
                     description.set("Common data layer (Room/Retrofit/OkHttp/Logger)")
