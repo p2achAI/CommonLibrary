@@ -1,5 +1,6 @@
 package ai.p2ach.p2achandroidlibrary.base.fragments
 
+import ai.p2ach.p2achandroidlibrary.utils.Log
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,9 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             ViewGroup::class.java,
             Boolean::class.java
         )
+
+        Log.d("test")
+
         _binding = inflate.invoke(null, inflater, container, false) as VB
         return binding.root
     }
