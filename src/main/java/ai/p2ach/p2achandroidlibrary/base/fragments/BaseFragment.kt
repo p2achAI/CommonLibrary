@@ -38,6 +38,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
         Log.d("test")
 
+        Log.d("test11111")
+
         _binding = inflate.invoke(null, inflater, container, false) as VB
         return binding.root
     }
