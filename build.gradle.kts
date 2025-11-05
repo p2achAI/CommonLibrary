@@ -65,4 +65,9 @@ dependencies {
 
     // Logger
     implementation("com.orhanobut:logger:2.2.0")
+
+    //viewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+
+
 }
