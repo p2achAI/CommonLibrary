@@ -2,7 +2,7 @@ package ai.p2ach.p2achandroidlibrary.base.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ai.p2ach.p2achandroidlibrary.base.repos.BaseRepo
+import ai.p2ach.p2achandroidlibrary.base.repos.BaseNetworkRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,15 +32,15 @@ abstract class BaseViewModel<T> : ViewModel() {
         }
     }
 
-    protected fun load(block: suspend () -> BaseRepo.ApiResult<T>) {
-        viewModelScope.launch {
-            _state.value = UiState.Loading
-            when (val r = block()) {
-                is BaseRepo.ApiResult.Success -> _state.value = UiState.Success(r.data)
-                is BaseRepo.ApiResult.NetworkError -> _state.value = UiState.Error(r.cause)
-                is BaseRepo.ApiResult.HttpError -> _state.value = UiState.Error(IllegalStateException("HTTP ${r.code}"))
-                is BaseRepo.ApiResult.UnknownError -> _state.value = UiState.Error(r.throwable)
-            }
-        }
-    }
+//    protected fun load(block: suspend () -> BaseNetworkRepo.ApiResult<T>) {
+////        viewModelScope.launch {
+////            _state.value = UiState.Loading
+////            when (val r = block()) {
+////                is BaseNetworkRepo.ApiResult.Success -> _state.value = UiState.Success(r.data)
+////                is BaseNetworkRepo.ApiResult.NetworkError -> _state.value = UiState.Error(r.cause)
+////                is BaseNetworkRepo.ApiResult.HttpError -> _state.value = UiState.Error(IllegalStateException("HTTP ${r.code}"))
+////                is BaseNetworkRepo.ApiResult.UnknownError -> _state.value = UiState.Error(r.throwable)
+////            }
+////        }
+//    }
 }
