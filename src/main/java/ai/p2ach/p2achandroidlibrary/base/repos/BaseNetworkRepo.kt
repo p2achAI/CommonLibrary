@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 
-abstract class BaseNetworkRepo<T>() : BaseRepo<T>() {
+abstract class BaseNetworkRepo<T>() : BaseLocalRepo<T>() {
 
     abstract suspend fun fetchRemote(): T?
     override fun stream(): Flow<T> {
