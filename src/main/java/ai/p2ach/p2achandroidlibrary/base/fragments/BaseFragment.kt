@@ -157,7 +157,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
      private fun onUsbCameraAttached(device: UsbDevice) {
          Log.d("onUsbCameraAttached ${device.deviceName}")
-         requestUsbPermission(device,"onUsbCameraAttached"){
+         requestUsbPermission(device,"onUsbCameraAttached1"){
              g->
              if(g)onReadyUsbCamera(device)
              else Log.d("${device.deviceName} permission denined.")
