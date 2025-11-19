@@ -1,19 +1,23 @@
 package ai.p2ach.p2achandroidlibrary.base.fragments
 
+import ai.p2ach.p2achandroidlibrary.base.activites.BaseNavigationActivity
 import ai.p2ach.p2achandroidlibrary.utils.Log
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.IdRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
-
-/*
-* BaseActivity와 마찬가지로 선언된 VB를 자동으로 inflate하여 자식에서의 Boilerplate Code 방지
-* */
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
@@ -21,12 +25,32 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected val binding: VB
         get() = _binding
 
+    private var permissionOnGranted: (() -> Unit)? = null
+    private var permissionOnDenied: ((Set<String>) -> Unit)? = null
+    private var lastRequiredPermissions: Set<String> = emptySet()
+
+    private val permissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            val context = requireContext()
+            val stillDenied = lastRequiredPermissions.filter { perm ->
+                ContextCompat.checkSelfPermission(context, perm) != PackageManager.PERMISSION_GRANTED
+            }.toSet()
+
+            if (stillDenied.isEmpty()) {
+                permissionOnGranted?.invoke()
+            } else {
+                permissionOnDenied?.invoke(stillDenied)
+            }
+            permissionOnGranted = null
+            permissionOnDenied = null
+            lastRequiredPermissions = emptySet()
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val vbClass = (javaClass.genericSuperclass as ParameterizedType)
             .actualTypeArguments[0] as Class<VB>
         val inflate = vbClass.getMethod(
@@ -35,8 +59,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             ViewGroup::class.java,
             Boolean::class.java
         )
-
-
         _binding = inflate.invoke(null, inflater, container, false) as VB
         return binding.root
     }
@@ -51,8 +73,49 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected inline fun autoBinding(block: VB.() -> Unit) {
         binding.block()
     }
-}
 
+
+
+
+    private fun requestPermissionsInternal(
+        permissions: Set<String>,
+        onGranted: () -> Unit,
+        onDenied: (Set<String>) -> Unit
+    ) {
+        if (permissions.isEmpty()) {
+            onGranted()
+            return
+        }
+        permissionOnGranted = onGranted
+        permissionOnDenied = onDenied
+        permissionsLauncher.launch(permissions.toTypedArray())
+    }
+
+
+    fun navigate(
+        @IdRes destinationId: Int,
+        args: Bundle? = null,
+        navOptions: NavOptions? = null
+    ) {
+        findNavController().navigate(resId = destinationId, args=args, navOptions = navOptions)
+    }
+
+    fun navigate(deepLink: Uri) {
+        findNavController().navigate(deepLink)
+    }
+
+    fun popBack() {
+        findNavController().popBackStack()
+    }
+
+    fun popBackTo(
+        @IdRes destinationId: Int,
+        inclusive: Boolean = false
+    ) {
+        findNavController().popBackStack(destinationId,inclusive)
+    }
+
+}
 
 fun <T : Any> Fragment.autoCleared() = AutoClearedValue<T>(this)
 
@@ -78,6 +141,7 @@ class AutoClearedValue<T : Any>(fragment: Fragment) : ReadWriteProperty<Fragment
     override fun setValue(thisRef: Fragment, property: KProperty<*>, value: T) {
         _value = value
     }
+
 
 
 
