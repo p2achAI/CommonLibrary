@@ -247,10 +247,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
 
 
-    fun  UsbDevice.isCameraDevice(): Boolean {
-        return this.deviceClass == UsbConstants.USB_CLASS_VIDEO ||
-                this.interfaceCount > 0 && this.getInterface(0).interfaceClass == UsbConstants.USB_CLASS_VIDEO
-    }
 
 
 }
@@ -281,3 +277,20 @@ class AutoClearedValue<T : Any>(fragment: Fragment) : ReadWriteProperty<Fragment
     }
 }
 
+
+fun  UsbDevice.isCameraDevice(): Boolean {
+    return this.deviceClass == UsbConstants.USB_CLASS_VIDEO ||
+            this.interfaceCount > 0 && this.getInterface(0).interfaceClass == UsbConstants.USB_CLASS_VIDEO
+}
+
+//private fun isUsbCamera(device: UsbDevice): Boolean {
+//    for (i in 0 until device.interfaceCount) {
+//        val usbInterface = device.getInterface(i)
+//        if (usbInterface.interfaceClass == 14 &&
+//            usbInterface.interfaceSubclass == 2)
+//        { // Subclass 2는 비디오 스트리밍
+//            return true
+//        }
+//    }
+//    return false
+//}
